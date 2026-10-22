@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your cart — Read Me</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main class="page-shell">
+        <section class="page-intro">
+            <span class="eyebrow">Your next great read</span>
+            <h1>Your cart<span class="heading-period">.</span></h1>
+            <p>Review the books you’ve picked for your shelf.</p>
+        </section>
+        <% if (items.length) { %>
+            <div class="cart-list">
+                <% items.forEach(({ book, quantity }) => { %>
+                    <article class="cart-item">
+                        <img src="<%= book.img || '/default-book-cover.svg' %>" alt="Cover of <%= book.title %>">
+                        <div class="cart-item-info">
+                            <span class="book-category"><%= book.category %></span>
+                            <h2><%= book.title %></h2>
+                            <p>by <%= book.author %></p>
+                            <form class="cart-quantity-form" action="/cart/update/<%= book._id %>" method="POST">
+                                <label for="quantity-<%= book._id %>">Quantity</label>
+                                <input id="quantity-<%= book._id %>" type="number" name="quantity" min="1" step="1" value="<%= quantity %>" required>
+                                <button class="icon-action" type="submit">Update</button>
+                            </form>
+                        </div>
+                        <strong class="book-price">₹<%= (Number(book.price) * quantity).toFixed(2) %></strong>
+                        <form action="/cart/remove/<%= book._id %>" method="POST">
+                            <button class="icon-action delete-action" type="submit">Remove</button>
+                        </form>
+                    </article>
+                <% }) %>
+            </div>
+            <div class="cart-total"><span>Cart total</span><strong>₹<%= total.toFixed(2) %></strong></div>
+            <a class="button button-outline" href="/books">Continue shopping</a>
+        <% } else { %>
+            <div class="empty-state">
+                <span class="empty-icon">✳</span>
+                <h2>Your cart is waiting for a story</h2>
+                <p>Add a book from the collection to see it here.</p>
+                <a class="button button-dark" href="/books">Explore books</a>
+            </div>
+        <% } %>
+    </main>
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>

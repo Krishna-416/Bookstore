@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Read Me</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main class="form-page">
+        <section class="form-panel">
+            <span class="eyebrow">We’d love to hear from you</span>
+            <h1>Say hello<span class="heading-period">.</span></h1>
+            <p class="form-description">Questions, suggestions, or a book recommendation? Drop us a note.</p>
+            <form action="/contact" method="POST" class="book-form">
+                <label for="name">Your name</label>
+                <input id="name" type="text" name="name" maxlength="120" required>
+                <label for="email">Email address</label>
+                <input id="email" type="email" name="email" maxlength="254" required>
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" name="phone" maxlength="40" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button class="button button-dark form-submit" type="submit">Send message <span aria-hidden="true">→</span></button>
+            </form>
+        </section>
+    </main>
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>

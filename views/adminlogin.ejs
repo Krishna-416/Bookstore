@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin sign in — Read Me</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main class="form-page">
+        <section class="form-panel">
+            <span class="eyebrow">A little behind-the-shelf magic</span>
+            <h1>Admin sign in<span class="heading-period">.</span></h1>
+            <p class="form-description">Sign in to manage the books and categories in your collection.</p>
+            <form action="/admin/login" method="POST" class="book-form">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" autocomplete="username" required>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" autocomplete="current-password" required>
+                <button class="button button-dark form-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+            </form>
+        </section>
+    </main>
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>

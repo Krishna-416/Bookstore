@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories — Read Me</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main class="page-shell">
+        <section class="page-intro category-intro">
+            <span class="eyebrow">Follow your curiosity</span>
+            <h1>Explore by category<span class="heading-period">.</span></h1>
+            <p>From page-turners to quiet reflections, find a shelf that feels like you.</p>
+        </section>
+        <% if (isAdmin) { %>
+            <form class="inline-add-form" action="/category" method="POST">
+                <label for="category-name">Add a category</label>
+                <input id="category-name" type="text" name="name" placeholder="e.g. Fiction" maxlength="60" required>
+                <button class="button button-dark" type="submit">＋ Add category</button>
+            </form>
+        <% } %>
+        <nav class="category-filter" aria-label="Filter books by category">
+            <a class="filter-chip <%= !selectedCategory ? 'is-active' : '' %>" href="/category">All books</a>
+            <% categories.forEach(category => { %>
+                <a class="filter-chip <%= selectedCategory === category ? 'is-active' : '' %>" href="/category/<%= encodeURIComponent(category) %>"><%= category %></a>
+            <% }) %>
+        </nav>
+        <div class="catalog-toolbar"><span data-catalog-count><%= books.length %> <%= books.length === 1 ? 'book' : 'books' %><%= selectedCategory ? ' in ' + selectedCategory : '' %></span></div>
+        <div class="catalog-controls" data-catalog-controls>
+            <label class="search-field">
+                <span class="visually-hidden">Search books</span>
+                <span aria-hidden="true">⌕</span>
+                <input type="search" placeholder="Search by title, author, or category" data-book-search>
+            </label>
+            <label class="sort-field">
+                <span>Sort by</span>
+                <select data-book-sort aria-label="Sort books">
+                    <option value="recent">Recently added</option>
+                    <option value="title">Title: A to Z</option>
+                    <option value="price-low">Price: low to high</option>
+                    <option value="price-high">Price: high to low</option>
+                </select>
+            </label>
+        </div>
+        <div class="book-grid catalog-grid">
+            <% if (books.length) { %>
+                <% books.forEach((book, index) => { %>
+                    <article class="book-card" data-book-card data-title="<%= book.title %>" data-author="<%= book.author %>" data-category="<%= book.category %>" data-price="<%= Number(book.price) %>">
+                        <a class="cover-wrap cover-tone-<%= index % 4 %>" href="/category/<%= encodeURIComponent(book.category) %>">
+                            <img src="<%= book.img || '/default-book-cover.svg' %>" alt="Cover of <%= book.title %>">
+                        </a>
+                        <div class="book-info">
+                            <a class="book-category" href="/category/<%= encodeURIComponent(book.category) %>"><%= book.category %></a>
+                            <h2><%= book.title %></h2>
+                            <p>by <%= book.author %></p>
+                            <div class="card-bottom">
+                                <strong class="book-price">₹<%= Number(book.price).toFixed(2) %></strong>
+                                <form class="add-to-cart-form" action="/cart/add/<%= book._id %>" method="POST"><button class="button button-dark" type="submit">Add to cart</button></form>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state"><span class="empty-icon">✳</span><h2>No books in this category yet</h2><p>Try another category, or come back when the shelf is stocked.</p><a class="button button-outline" href="/category">View all categories</a></div>
+            <% } %>
+            <div class="empty-state search-empty-state" data-search-empty hidden><span class="empty-icon">⌕</span><h2>No matching books</h2><p>Try a different title, author, or category.</p></div>
+        </div>
+    </main>
+    <%- include('includes/footer.ejs') %>
+</body>
+</html>
